@@ -86,8 +86,8 @@ telco
     # 2. Walk through the steps above using your new dataframe. You may handle the missing 
 # values however you feel is appropriate.
 
-
 telco.total_charges.replace(r'^\s*$', np.nan, regex=True, inplace=True)
+telco.total_charges.isna()
 telco.total_charges.dropna().astype(float)
 telco
 
