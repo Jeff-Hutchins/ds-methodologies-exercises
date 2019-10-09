@@ -88,13 +88,14 @@ telco
 
 
 telco.total_charges.replace(r'^\s*$', np.nan, regex=True, inplace=True)
-telco.total_charges.dropna().astype('float')
+telco.total_charges.dropna().astype(float)
 telco
 
 # 3. End with a python file wrangle.py that contains the function, wrangle_telco(), 
 # that will acquire the data and return a dataframe cleaned with no missing values.
 
 def get_db_url(user, host, password, database):
+    from env import user, host, password
     url = f'mysql+pymysql://{user}:{password}@{host}/{database}'
     return url
 
@@ -104,8 +105,8 @@ def wrangle_grades():
     from customers
     where contract_type_id = 3;'''
     , url)
-    telco.total_charges.replace(r'^\s*$', np.nan, regex=True, inplace=True)
-    telco = telco.total_charges.dropna().astype('float')
+    telco = telco.total_charges.replace(r'^\s*$', np.nan, regex=True, inplace=True)
+    telco = telco.total_charges.dropna().astype(float)
     return telco
 
 telco
