@@ -61,6 +61,8 @@ def regression_errors(y, yhat):
 tips['residual'] = tips['yhat'] - tips.y
 tips['residual-2'] = tips['residual'] ** 2
 SSE = sum(tips['residual-2'])
+ESS = sum((tips.yhat - tips.y.mean())**2)
+TSS = ESS + SSE
 MSE = SSE/len(tips)
 RMSE = sqrt(MSE)
 print(tips.head())
@@ -71,17 +73,43 @@ print(SSE, MSE, RMSE)
 # values (SSE, MSE, and RMSE).
 
 def baseline_mean_errors(y):
+    yhat_base = y.mean()
+    SSE_base = sum(tips['residual-2'])
+    MSE_base = SSE/len(tips)
+    RMSE_base = sqrt(MSE)
 
-
+SSE
+MSE
+RMSE
 
 # 7. Write a function, better_than_baseline(SSE), that returns true if your model 
 # performs better than the baseline, otherwise false.
 
-
+def better_than_baseline(SSE, SEE_base):
+    if SSE > SSE_base:
+        return True
+    else:
+        return False
 
 # 8. Write a function, model_significance(ols_model), that takes the ols model as 
 # input and returns the amount of variance explained in your model, and the value 
 # telling you whether the correlation between the model and the tip value are 
 # statistically significant.
 
+def model_significance(ols_model):
+    R2 = round(ESS/TSS *100, 2)
+    print(f'{R2} percent of the variance is explained by this model.')
+    regr_results = regr.summary()
+    regr_pvalues = pd.DataFrame(regr.pvalues)
+    regr_x_pvalue = regr_pvalues.loc['x', 0]
+    if regr_x_pvalue < .005:
+        return f'correlation between the model and the tip values are statistically signifigant'
+    else:
+        return f'correlation between the model and the tip values are not statistically signifigant'
 
+
+f'{R2} percent of the variance is explained by this model.'
+
+regr_results = regr.summary()
+regr_pvalues = pd.DataFrame(regr.pvalues)
+regr_pvalues.loc['x', 0]
