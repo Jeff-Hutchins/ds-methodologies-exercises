@@ -7,6 +7,8 @@ from sklearn.preprocessing import StandardScaler, QuantileTransformer, PowerTran
 import wrangle
 from env import user, host, password
 
+# CREATE THE OBJECT, FIT IT, TRANSFORM IT
+
 # Our scenario continues:
 # As a customer analyst, I want to know who has spent the most money with us over 
 # their lifetime. I have monthly charges and tenure, so I think I will be able to 
