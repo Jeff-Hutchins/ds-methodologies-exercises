@@ -8,7 +8,7 @@
 # (X_train and y_train should not be scaled!) and returns a list of the top k features.
 
 def select_kbest_freg_unscaled():
-    
+
 
 # 2. Write a function, select_kbest_freg()_scaled that takes X_train, y_train (scaled) and k as input 
 # and returns a list of the top k features.
@@ -31,7 +31,7 @@ def lasso_cv_coef():
 # 5. Write 3 functions, the first computes the number of optimum features (n) using rfe, the 
 # second takes n as input and returns the top n features, and the third takes the list of 
 # the top n features as input and returns a new X_train and X_test dataframe with those 
-# top features , recursive_feature_elimination() that computes the optimum number of 
+# top features , recursive_feature_elimination() that  the optimum number of 
 # features (n) and returns the top n features.
 
 
