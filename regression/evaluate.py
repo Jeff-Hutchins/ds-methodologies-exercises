@@ -13,12 +13,16 @@ from math import sqrt
 # 1. Load the tips dataset from either pydataset or seaborn.
 
 tips = data('tips')
+tips = sns.load_dataset('tips')
+
 tips = tips[['total_bill', 'tip']]
 tips.head()
 tips.describe()
 tips.info()
 tips.dtypes
 tips.columns.values
+
+df = tips
 
 # 2. Fit a linear regression model (ordinary least squares) and compute yhat, predictions of 
 # tip using total_bill. You may follow these steps to do that:
@@ -30,16 +34,16 @@ from statsmodels.formula.api import ols
     # fit the model to your data, where x = total_bill and y = tip: 
     # regr = ols('y ~ x', data=df).fit()
 
-x = pd.DataFrame(tips.total_bill)
-y = pd.DataFrame(tips.tip)
-regr = ols('y ~ x', data=tips).fit()
+x = pd.DataFrame(df.total_bill)
+y = pd.DataFrame(df.tip)
+regr = ols('y ~ x', data=df).fit()
 
     # compute yhat, the predictions of tip using total_bill: df['yhat'] = regr.predict(df.x)
 
-tips['y'] = y
-tips['yhat'] = regr.predict(x)
+df['y'] = y
+df['yhat'] = regr.predict(x)
 regr.summary()
-tips.head()
+df.head()
 
 # 3. Create a file evaluate.py that contains the following functions.
 
@@ -50,22 +54,45 @@ tips.head()
 def plot_residuals(x, y, dataframe):
     return sns.residplot(x, y, dataframe)
 
-sns.residplot(x, y, tips)
+sns.residplot(x, y, df)
 
 # 5. Write a function, regression_errors(y, yhat), that takes in y and yhat, returns the 
 # sum of squared errors (SSE), explained sum of squares (ESS), total sum of squares (TSS), 
 # mean squared error (MSE) and root mean squared error (RMSE).
+df['residual'] = df['yhat'] - df.y
+df['residual-2'] = df['residual'] ** 2
 
 def regression_errors(y, yhat):
+    SSE = sum(df['residual-2'])
+    ESS = sum((df.yhat - df.y.mean())**2)
+    TSS = ESS + SSE
+    MSE = SSE/len(df)
+    RMSE = sqrt(MSE)
+    df_eval = pd.DataFrame(np.array(['SSE', 'ESS', 'TSS', 'MSE', 'RMSE',]), columns=['metric'])
+    df_eval['model_error'] = np.array([SSE, ESS, TSS, MSE, RMSE])
+    return df_eval
 
-tips['residual'] = tips['yhat'] - tips.y
-tips['residual-2'] = tips['residual'] ** 2
-SSE = sum(tips['residual-2'])
-ESS = sum((tips.yhat - tips.y.mean())**2)
+regression_errors(df.tip, df.yhat)
+
+    #or
+
+from sklearn.metrics import mean_squared_error
+def regression_errors(y, yhat):
+    mse = mean_squared_error(y, yhat)
+    sse = mse * len(y)
+    ess = ((yhat-y.mean())**2).sum()
+    tss = sse + ess
+    rmse = mse ** .5
+    df_eval = pd.DataFrame(np.array(['sse', 'ess', 'tss', 'mse', 'rmse',]), columns=['metric'])
+    df_eval['model_error'] = np.array([sse, ess, tss, mse, rmse])
+    return df_eval
+
+SSE = sum(df['residual-2'])
+ESS = sum((df.yhat - df.y.mean())**2)
 TSS = ESS + SSE
-MSE = SSE/len(tips)
+MSE = SSE/len(df)
 RMSE = sqrt(MSE)
-print(tips.head())
+print(df.head())
 print(SSE, MSE, RMSE)
 
 # 6. Write a function, baseline_mean_errors(y), that takes in your target, y, computes 
@@ -73,10 +100,14 @@ print(SSE, MSE, RMSE)
 # values (SSE, MSE, and RMSE).
 
 def baseline_mean_errors(y):
-    yhat_base = y.mean()
-    SSE_base = sum(tips['residual-2'])
-    MSE_base = SSE/len(tips)
-    RMSE_base = sqrt(MSE)
+
+yhat_baseline = y.mean()
+yhat_baseline = y.median()
+SSE_baseline = sum(df['residual-2'])
+MSE_baseline = SSE/len(df)
+RMSE_baseline = sqrt(MSE)
+
+regression_errors(df.tip, yhat_baseline)
 
 SSE
 MSE
@@ -85,11 +116,8 @@ RMSE
 # 7. Write a function, better_than_baseline(SSE), that returns true if your model 
 # performs better than the baseline, otherwise false.
 
-def better_than_baseline(SSE, SEE_base):
-    if SSE > SSE_base:
-        return True
-    else:
-        return False
+def better_than_baseline(SSE, SEE_baseline):
+    return SSE < SSE_baseline
 
 # 8. Write a function, model_significance(ols_model), that takes the ols model as 
 # input and returns the amount of variance explained in your model, and the value 
