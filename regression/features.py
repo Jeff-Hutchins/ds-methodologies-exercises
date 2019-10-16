@@ -80,13 +80,56 @@ import statsmodels.api as sm
 
 def ols_backware_elimination():
 
+# create the OLS object:
+ols_model = sm.OLS(y_train, X_train)
 
+# fit the model:
+fit = ols_model.fit()
+
+# summarize:
+fit.summary()
+
+cols = list(X_train.columns)
+pmax = 1
+while (len(cols)>0):
+    p= []
+    X_1 = X_train[cols]
+    X_1 = sm.add_constant(X_1)
+    model = sm.OLS(y_train,X_1).fit()
+    p = pd.Series(model.pvalues.values[1:],index = cols)
+    pmax = max(p)
+    feature_with_p_max = p.idxmax()
+    if(pmax>0.05):
+        cols.remove(feature_with_p_max)
+    else:
+        break
+
+selected_features_BE = cols
+print(selected_features_BE)
 
 # 4. Write a function, lasso_cv_coef() that takes X_train and y_train as input and returns 
 # the coefficients for each feature, along with a plot of the features and their weights.
 
 def lasso_cv_coef():
 
+from sklearn.linear_model import LassoCV
+
+reg = LassoCV()
+reg.fit(X_train, y_train)
+
+print("Best alpha using built-in LassoCV: %f" % reg.alpha_)
+print("Best score using built-in LassoCV: %f" %reg.score(X_train,y_train))
+coef = pd.Series(reg.coef_, index = X_train.columns)
+
+print("Lasso picked " + str(sum(coef != 0)) + " variables and eliminated the other " +  str(sum(coef == 0)) + " variables")
+
+imp_coef = coef.sort_values()
+
+import matplotlib
+
+matplotlib.rcParams['figure.figsize'] = (4.0, 5.0)
+imp_coef.plot(kind = "barh")
+plt.title("Feature importance using Lasso Model")
 
 # 5. Write 3 functions, the first computes the number of optimum features (n) using rfe, the 
 # second takes n as input and returns the top n features, and the third takes the list of 
