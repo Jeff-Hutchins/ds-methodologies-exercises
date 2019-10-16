@@ -141,3 +141,8 @@ f'{R2} percent of the variance is explained by this model.'
 regr_results = regr.summary()
 regr_pvalues = pd.DataFrame(regr.pvalues)
 regr_pvalues.loc['x', 0]
+
+ols_model.ess
+regr.centered_tss
+regr.f_pvalue
+regr.rsquared
