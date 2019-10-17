@@ -22,62 +22,62 @@ from env import user, host, password
 # from the original dataframe. Be sure to set a random state where applicable for 
 # reproducibility!
 
-get_db_url(user, host, password, database="telco_churn")
-telco = wrangle_telco()
-telco
+# get_db_url(user, host, password, database="telco_churn")
+# telco = wrangle_telco()
+# telco
 
-# split_my_data(X, y, train_pct)
+# # split_my_data(X, y, train_pct)
 
-train, test = train_test_split(telco, train_size=0.80, random_state=123)
-train = train.drop('customer_id', axis=1)
-test = test.drop('customer_id', axis=1)
+# train, test = train_test_split(telco, train_size=0.80, random_state=123)
+# train = train.drop('customer_id', axis=1)
+# test = test.drop('customer_id', axis=1)
 
-# train = train.set_index('customer_id')
-# test = test.set_index('customer_id')
-# train.shape
-# test.shape
+# # train = train.set_index('customer_id')
+# # test = test.set_index('customer_id')
+# # train.shape
+# # test.shape
 
-# train.drop('customer_id', axis=1)
+# # train.drop('customer_id', axis=1)
 
-# standard_scaler()
+# # standard_scaler()
 
-scaler = StandardScaler(copy=True, with_mean=True, with_std=True).fit(train)
-train_scaled = pd.DataFrame(scaler.transform(train), columns=train.columns.values).set_index([train.index.values])
-test_scaled = pd.DataFrame(scaler.transform(test), columns=test.columns.values).set_index([test.index.values])
-train_scaled
-test_scaled
+# scaler = StandardScaler(copy=True, with_mean=True, with_std=True).fit(train)
+# train_scaled = pd.DataFrame(scaler.transform(train), columns=train.columns.values).set_index([train.index.values])
+# test_scaled = pd.DataFrame(scaler.transform(test), columns=test.columns.values).set_index([test.index.values])
+# train_scaled
+# test_scaled
 
-# scale_inverse()
+# # scale_inverse()
 
-train = pd.DataFrame(scaler.inverse_transform(train_scaled), columns=train_scaled.columns.values).set_index([train_scaled.index.values])
-test = pd.DataFrame(scaler.inverse_transform(test_scaled), columns=test_scaled.columns.values).set_index([test_scaled.index.values])
+# train = pd.DataFrame(scaler.inverse_transform(train_scaled), columns=train_scaled.columns.values).set_index([train_scaled.index.values])
+# test = pd.DataFrame(scaler.inverse_transform(test_scaled), columns=test_scaled.columns.values).set_index([test_scaled.index.values])
 
-# uniform_scaler()
+# # uniform_scaler()
 
-scaler = QuantileTransformer(n_quantiles=100, output_distribution='uniform', random_state=seed, copy=True).fit(train)
-train_scaled = pd.DataFrame(scaler.transform(train), columns=train.columns.values).set_index([train.index.values])
-test_scaled = pd.DataFrame(scaler.transform(test), columns=test.columns.values).set_index([test.index.values])
-
-
-# gaussian_scaler()
-
-scaler = PowerTransformer(method, standardize=False, copy=True).fit(train)
-train_scaled = pd.DataFrame(scaler.transform(train), columns=train.columns.values).set_index([train.index.values])
-test_scaled = pd.DataFrame(scaler.transform(test), columns=test.columns.values).set_index([test.index.values])
+# scaler = QuantileTransformer(n_quantiles=100, output_distribution='uniform', random_state=seed, copy=True).fit(train)
+# train_scaled = pd.DataFrame(scaler.transform(train), columns=train.columns.values).set_index([train.index.values])
+# test_scaled = pd.DataFrame(scaler.transform(test), columns=test.columns.values).set_index([test.index.values])
 
 
-# min_max_scaler()
+# # gaussian_scaler()
 
-scaler = MinMaxScaler(copy=True, feature_range=minmax_range).fit(train)
-train_scaled = pd.DataFrame(scaler.transform(train), columns=train.columns.values).set_index([train.index.values])
-test_scaled = pd.DataFrame(scaler.transform(test), columns=test.columns.values).set_index([test.index.values])
+# scaler = PowerTransformer(method, standardize=False, copy=True).fit(train)
+# train_scaled = pd.DataFrame(scaler.transform(train), columns=train.columns.values).set_index([train.index.values])
+# test_scaled = pd.DataFrame(scaler.transform(test), columns=test.columns.values).set_index([test.index.values])
 
 
-# iqr_robust_scaler()
+# # min_max_scaler()
 
-scaler = RobustScaler(quantile_range=(25.0,75.0), copy=True, with_centering=True, with_scaling=True).fit(train)
-train_scaled = pd.DataFrame(scaler.transform(train), columns=train.columns.values).set_index([train.index.values])
-test_scaled = pd.DataFrame(scaler.transform(test), columns=test.columns.values).set_index([test.index.values])
+# scaler = MinMaxScaler(copy=True, feature_range=minmax_range).fit(train)
+# train_scaled = pd.DataFrame(scaler.transform(train), columns=train.columns.values).set_index([train.index.values])
+# test_scaled = pd.DataFrame(scaler.transform(test), columns=test.columns.values).set_index([test.index.values])
+
+
+# # iqr_robust_scaler()
+
+# scaler = RobustScaler(quantile_range=(25.0,75.0), copy=True, with_centering=True, with_scaling=True).fit(train)
+# train_scaled = pd.DataFrame(scaler.transform(train), columns=train.columns.values).set_index([train.index.values])
+# test_scaled = pd.DataFrame(scaler.transform(test), columns=test.columns.values).set_index([test.index.values])
 
 
 import pandas as pd

@@ -77,15 +77,15 @@ regression_errors(df.tip, df.yhat)
     #or
 
 from sklearn.metrics import mean_squared_error
-def regression_errors(y, yhat):
-    mse = mean_squared_error(y, yhat)
-    sse = mse * len(y)
-    ess = ((yhat-y.mean())**2).sum()
-    tss = sse + ess
-    rmse = mse ** .5
-    df_eval = pd.DataFrame(np.array(['sse', 'ess', 'tss', 'mse', 'rmse',]), columns=['metric'])
-    df_eval['model_error'] = np.array([sse, ess, tss, mse, rmse])
-    return df_eval
+# def regression_errors(y, yhat):
+#     mse = mean_squared_error(y, yhat)
+#     sse = mse * len(y)
+#     ess = ((yhat-y.mean())**2).sum()
+#     tss = sse + ess
+#     rmse = mse ** .5
+#     df_eval = pd.DataFrame(np.array(['sse', 'ess', 'tss', 'mse', 'rmse',]), columns=['metric'])
+#     df_eval['model_error'] = np.array([sse, ess, tss, mse, rmse])
+#     return df_eval
 
 SSE = sum(df['residual-2'])
 ESS = sum((df.yhat - df.y.mean())**2)
@@ -100,12 +100,12 @@ print(SSE, MSE, RMSE)
 # values (SSE, MSE, and RMSE).
 
 def baseline_mean_errors(y):
-
-yhat_baseline = y.mean()
-yhat_baseline = y.median()
-SSE_baseline = sum(df['residual-2'])
-MSE_baseline = SSE/len(df)
-RMSE_baseline = sqrt(MSE)
+    yhat_baseline = y.mean()
+    yhat_baseline = y.median()
+    SSE_baseline = sum(df['residual-2'])
+    MSE_baseline = SSE/len(df)
+    RMSE_baseline = sqrt(MSE)
+    return SSE, MSE, RMSE
 
 regression_errors(df.tip, yhat_baseline)
 
