@@ -25,4 +25,3 @@ def get_titanic_data():
 def get_iris_data():
     df = sns.load_dataset("iris")
     return df
-
