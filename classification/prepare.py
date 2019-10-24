@@ -68,10 +68,11 @@ from sklearn.preprocessing import MinMaxScaler
 #1)Use the function defined in `aquire.py` to load the iris data.
 
 
-from aquire import get_iris_data
-from aquire import get_titanic_data
+from acquire import get_iris_data
+from acquire import get_titanic_data
 from sklearn.preprocessing import LabelEncoder
 from sklearn.preprocessing import MinMaxScaler 
+
 iris_df=get_iris_data()
 
 #1a) Drop the `species_id` and `measurement_id` columns.
