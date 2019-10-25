@@ -115,8 +115,8 @@ def titanic_remove_columns(df):
 # 2c) Use a label encoder to transform the `embarked` column
 def encode_titanic(df):
     encoder_titanic=LabelEncoder()
-    encoder_titanic.fit(titanic_df.embarked)
-    titanic_df=encoder_titanic.transform(titanic_df.embarked)
+    encoder_titanic.fit(df.embarked)
+    titanic_df=encoder_titanic.transform(df.embarked)
     return titanic_df,encoder_titanic
 
 # 2d) Scale the `age` and `fare` columns using a min/max scaler.
